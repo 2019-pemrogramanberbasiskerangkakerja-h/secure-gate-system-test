@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use('/', router);
 
 router.get('/login', function(req, res) {
-	res.sendFile(path.join(__dirname+'/index.html'));
+	res.sendFile(path.join(__dirname+'/login.html'));
 })
 
 router.post('/login', function(req, res) {
@@ -31,10 +31,59 @@ router.post('/login', function(req, res) {
 	pool.query(query).then(results => {
 		mkmk = results[0].user_password;
 		console.log(mkmk);
-		res.redirect('/berhasillogin');
+		var querylogin = 'insert into log values(' + "'" + uname + "'" + ",now()," + "'mencoba login')";
+		console.log(querylogin);
+		pool.query(querylogin);
+		if (md5(pass) == mkmk) {
+			console.log('password benar');
+			res.redirect('/berhasillogin');
+		}
+		else {
+			console.log('username/password salah');
+			res.redirect('/gagallogin');
+		}
 	}).catch(err => {
 		console.log(err);
 		res.redirect('/gagallogin')
+	})
+})
+
+router.get('/register', function(req, res) {
+	res.sendFile(path.join(__dirname+'/register.html'));
+})
+
+router.post('/register', function(req, res) {
+	var uname = req.body.username;
+	var pass = req.body.password;
+	var confirm = req.body.password_confirm;
+	console.log("Mencoba buat akun baru dengan nama pengguna", uname, "dengan password", pass);
+	query = 'insert into users values (' + "'" + uname + "'" + ',' + 'md5(' + "'" + pass + "'" + '),' + "'user')";
+	if (pass != confirm) {
+		res.redirect('/gagalbuatakun');
+	}
+	else {
+		pool.query(query).then(results=> {
+			res.redirect('/berhasilbuatakun');
+		}).catch(err => {
+			res.redirect('/gagalbuatakun');
+		})
+	} 
+})
+
+router.get('/gate', function(req, res) {
+	res.sendFile(path.join(__dirname+'/gate.html'));
+})
+
+router.post('/gate', function(req, res) {
+	var gateid = req.body.id;
+	var start = req.body.start;
+	var end = req.body.end;
+	query = 'insert into gate values(' + "'" + gateid + "'" + ',' + "'" + start + "'" + ',' + "'" + end + "'" +')';
+	console.log(query);
+	pool.query(query).then(results => {
+		res.redirect('/berhasilbuatgate');
+	}).catch(err => {
+		res.redirect('/gagalbuatgate');
 	})
 })
 
@@ -42,10 +91,25 @@ router.get('/gagallogin',  function(req, res) {
 	res.sendFile(path.join(__dirname+'/gagallogin.html'));
 });
 
+router.get('/gagalbuatakun',  function(req, res) {
+	res.sendFile(path.join(__dirname+'/gagalbuatakun.html'));
+});
+
 router.get('/berhasillogin',  function(req, res) {
 	res.sendFile(path.join(__dirname+'/berhasillogin.html'));
 });
 
+router.get('/berhasilbuatakun',  function(req, res) {
+	res.sendFile(path.join(__dirname+'/berhasilbuatakun.html'));
+});
+
+router.get('/berhasilbuatgate',  function(req, res) {
+	res.sendFile(path.join(__dirname+'/berhasilbuatgate.html'));
+});
+
+router.get('/gagalbuatgate',  function(req, res) {
+	res.sendFile(path.join(__dirname+'/gagalbuatgate.html'));
+});
 
 app.listen(process.env.port || 3000);
 
