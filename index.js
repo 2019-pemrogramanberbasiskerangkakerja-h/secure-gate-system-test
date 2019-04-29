@@ -24,15 +24,18 @@ app.use(session({
 }));
 
 app.use('/', router);
+var sess;
 
 router.get('/login', function(req, res) {
 	res.sendFile(path.join(__dirname+'/login.html'));
 })
 
 router.post('/login', function(req, res) {
-	var mkmk;
+	sess = req.session;
+	var mkmk, usergate = [], flag = 0;
 	var uname = req.body.username;
 	var pass = req.body.password;
+	var gate = req.body.gate;
 	console.log("Mencoba login dengan nama pengguna", uname, "dengan password", pass);
 	query = 'select user_password from users where user_nrp=' + "'" + uname + "'";
 	console.log(query);
@@ -44,10 +47,28 @@ router.post('/login', function(req, res) {
 		pool.query(querylogin);
 		if (md5(pass) == mkmk) {
 			console.log('password benar');
-			req.session.username=uname;
-			res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
-			console.log(req.session.username);
-			res.redirect('/berhasillogin');
+			query = 'select gate_id from usergate where user_nrp =' + "'" + uname + "'";
+			console.log(query);
+			pool.query(query).then(results => {
+				for (var i=0;i<results.length;i++) {
+					usergate.push(results[i].gate_id);
+				}
+				for (var i=0;i<results.length;i++) {
+					if (gate == usergate[i]) {
+						flag = 1;
+					}
+				}
+				if (flag == 1) {
+					console.log(uname, 'berhasil login')
+					sess.username=uname;
+					res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
+					res.redirect('/berhasillogin');
+				}
+				else {
+					console.log(gate, 'bukan gate yang diperbolehkan untuk user', uname);
+					res.redirect('/gagallogin');
+				}
+			})
 		}
 		else {
 			console.log('username/password salah');
@@ -64,6 +85,7 @@ router.get('/register', function(req, res) {
 })
 
 router.post('/register', function(req, res) {
+	sess = req.session;
 	var uname = req.body.username;
 	var pass = req.body.password;
 	var confirm = req.body.password_confirm;
@@ -74,6 +96,8 @@ router.post('/register', function(req, res) {
 	}
 	else {
 		pool.query(query).then(results=> {
+			sess.username = uname;
+			res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
 			res.redirect('/berhasilbuatakun');
 		}).catch(err => {
 			res.redirect('/gagalbuatakun');
@@ -111,6 +135,18 @@ router.post('/usergate', function(req, res) {
 		res.redirect('/berhasilusergate');
 	})
 });
+
+router.get('/logout', function(req, res) {
+	console.log(sess.username, 'logout...');
+	sess = req.session;
+	res.clearCookie('NRP_SESSION');
+	req.session.destroy((err) => {
+		if (err) {
+			return console.log(err);
+		}
+		res.redirect('/login')
+	})
+})
 
 router.get('/berhasilusergate',  function(req, res) {
 	res.sendFile(path.join(__dirname+'/berhasilusergate.html'));
