@@ -5,6 +5,7 @@ const router = express.Router();
 var bodyParser = require('body-parser');
 var mariadb = require('mariadb');
 var md5 = require('md5');
+const session = require('express-session');
 
 const pool = mariadb.createPool({
 	host: '127.0.0.1',
@@ -16,12 +17,16 @@ const pool = mariadb.createPool({
 app.use(bodyParser.urlencoded({extended : true}));
 
 app.use('/', router);
+app.use(session({secret: 'ssshhhhh'}));
 
 router.get('/login', function(req, res) {
 	res.sendFile(path.join(__dirname+'/login.html'));
 })
 
 router.post('/login', function(req, res) {
+	var sess;
+	sess = req.session;
+	sess.username;
 	var mkmk;
 	var uname = req.body.username;
 	var pass = req.body.password;
@@ -36,6 +41,8 @@ router.post('/login', function(req, res) {
 		pool.query(querylogin);
 		if (md5(pass) == mkmk) {
 			console.log('password benar');
+			sess.username = uname;
+			console.log(sess.username);
 			res.redirect('/berhasillogin');
 		}
 		else {
@@ -86,6 +93,24 @@ router.post('/gate', function(req, res) {
 		res.redirect('/gagalbuatgate');
 	})
 })
+
+router.get('/usergate', function(req, res) {
+	res.sendFile(path.join(__dirname+'/usergate.html'));
+})
+
+router.post('/usergate', function(req, res) {
+	var user = req.body.user;
+	var gate = req.body.gate;
+	query = 'insert into usergate values(' + "'" + user + "'," + "'" + gate + "')"
+	console.log(query)
+	pool.query(query).then(results => {
+		res.redirect('/berhasilusergate');
+	})
+});
+
+router.get('/berhasilusergate',  function(req, res) {
+	res.sendFile(path.join(__dirname+'/berhasilusergate.html'));
+});
 
 router.get('/gagallogin',  function(req, res) {
 	res.sendFile(path.join(__dirname+'/gagallogin.html'));
