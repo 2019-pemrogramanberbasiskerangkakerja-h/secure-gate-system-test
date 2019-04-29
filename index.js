@@ -77,7 +77,7 @@ router.post('/login', function(req, res) {
 								res.redirect('/berhasillogin');
 							}
 							else {
-								console.log('maaf, gak boleh ngakses');
+								console.log('maaf, gak boleh ngakses karena bukan pada waktunya');
 								res.redirect('/gagallogin');
 							}
 						})
