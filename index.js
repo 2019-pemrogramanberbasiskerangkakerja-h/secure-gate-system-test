@@ -59,10 +59,29 @@ router.post('/login', function(req, res) {
 					}
 				}
 				if (flag == 1) {
-					console.log(uname, 'berhasil login')
-					sess.username=uname;
-					res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
-					res.redirect('/berhasillogin');
+					var starttime, endtime, querystart, queryend;
+					querystart = 'select gate_start from gate where gate_id =' + "'" + gate + "'";
+					pool.query(querystart).then(results => {
+						starttime = results[0].gate_start;
+						queryend = 'select gate_end from gate where gate_id =' + "'" + gate + "'";
+						pool.query(queryend).then(results => {
+							endtime = results[0].gate_end;
+							/*console.log(Date.parse(starttime));
+							console.log(Date.parse(endtime));
+							console.log(Date.now());*/
+							if (Date.parse(starttime) <= Date.now() && Date.now() <= Date.parse(endtime)) {
+								console.log('boleh ngakses');
+								console.log(uname, 'berhasil login');
+								sess.username=uname;
+								res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
+								res.redirect('/berhasillogin');
+							}
+							else {
+								console.log('maaf, gak boleh ngakses');
+								res.redirect('/gagallogin');
+							}
+						})
+					})
 				}
 				else {
 					console.log(gate, 'bukan gate yang diperbolehkan untuk user', uname);
