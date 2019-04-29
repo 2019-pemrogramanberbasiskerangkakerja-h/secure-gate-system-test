@@ -5,7 +5,9 @@ const router = express.Router();
 var bodyParser = require('body-parser');
 var mariadb = require('mariadb');
 var md5 = require('md5');
-const session = require('express-session');
+var session = require('express-session');
+app.use(bodyParser.urlencoded({extended : true}));
+var cookieParser = require('cookie-parser');
 
 const pool = mariadb.createPool({
 	host: '127.0.0.1',
@@ -14,19 +16,20 @@ const pool = mariadb.createPool({
 	port: 3306
 })
 
-app.use(bodyParser.urlencoded({extended : true}));
+app.use(cookieParser());
+app.use(session({
+	secret: 'hehe',
+	saveUninitialized: true,
+	resave: true
+}));
 
 app.use('/', router);
-app.use(session({secret: 'ssshhhhh'}));
 
 router.get('/login', function(req, res) {
 	res.sendFile(path.join(__dirname+'/login.html'));
 })
 
 router.post('/login', function(req, res) {
-	var sess;
-	sess = req.session;
-	sess.username;
 	var mkmk;
 	var uname = req.body.username;
 	var pass = req.body.password;
@@ -41,8 +44,9 @@ router.post('/login', function(req, res) {
 		pool.query(querylogin);
 		if (md5(pass) == mkmk) {
 			console.log('password benar');
-			sess.username = uname;
-			console.log(sess.username);
+			req.session.username=uname;
+			res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
+			console.log(req.session.username);
 			res.redirect('/berhasillogin');
 		}
 		else {
