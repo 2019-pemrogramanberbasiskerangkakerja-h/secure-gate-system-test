@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
 	<title>Buat akun baru</title>
 </head>
 <body>
-<h1>Buat akun baru</h1>
-<p>Gunakan form ini untuk membuat akun baru Anda.</p>
-<form action="/register" method="post">
-	<p>NRP: </p><input type="text" name="username" placeholder="Nrp" id="my_container" required>
-	<br>
-    <p>Kata Sandi: </p><input type="password" name="password" placeholder="Kata Sandi" id="pass_container" required>
-    <br>
-    <p>Konfirmasi Kata Sandi: </p><input type="password" name="password_confirm" placeholder="Konfirmasi Kata Sandi" id="pass_container" required>
-    <input type="submit" value="Buat Akun Baru">
-</form>
-<p>Sudah mempunyai akun? <a href="/login">Masuk log!</a></p>
+	<div class="jumbotron jumbotron-fluid">
+        <div class="container">
+        	<div class="jumbotron jumbotron-fluid">
+		        <div class="container">
+		            <h1 class="display-4">Form Register</h1>
+		            <p class="lead">Gunakan form ini untuk membuat akun baru Anda.</p>
+					<form action="/register" method="post">
+						<p>NRP: </p><input type="text" name="username" placeholder="Nrp" id="my_container" required>
+						<br>
+					    <p>Kata Sandi: </p><input type="password" name="password" placeholder="Kata Sandi" id="pass_container" required>
+					    <br>
+					    <p>Konfirmasi Kata Sandi: </p><input type="password" name="password_confirm" placeholder="Konfirmasi Kata Sandi" id="pass_container" required>
+					    <input type="submit" value="Buat Akun Baru">
+					</form>
+					<p>Sudah mempunyai akun? <a href="/login">Masuk log!</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

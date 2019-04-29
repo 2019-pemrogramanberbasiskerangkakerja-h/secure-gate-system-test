@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2019 at 06:47 AM
+-- Generation Time: Apr 30, 2019 at 01:06 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.2
 
@@ -40,7 +40,9 @@ CREATE TABLE `gate` (
 
 INSERT INTO `gate` (`gate_id`, `gate_start`, `gate_end`) VALUES
 ('ewewe', '2019-04-29 00:30:00', '2019-04-30 13:00:00'),
-('owowo', '2011-04-20 14:30:00', '2011-04-25 02:45:00');
+('jokowi', '2019-04-29 15:00:00', '2019-04-30 15:00:00'),
+('mygate', '2019-05-01 00:00:00', '2019-05-02 10:00:00'),
+('owowo', '2019-04-20 14:30:00', '2019-04-25 02:45:00');
 
 -- --------------------------------------------------------
 
@@ -59,8 +61,22 @@ CREATE TABLE `log` (
 --
 
 INSERT INTO `log` (`user_nrp`, `log_timestamp`, `log_actions`) VALUES
-('joko', '2019-04-28 16:48:36', 'mencoba login'),
-('joko', '2019-04-28 16:48:56', 'mencoba login');
+('admin', '2019-04-29 16:49:54', 'mencoba login'),
+('admin', '2019-04-29 16:52:09', 'mencoba login'),
+('5', '2019-04-29 16:52:20', 'mencoba login'),
+('admin', '2019-04-29 16:53:08', 'mencoba login'),
+('admin', '2019-04-29 16:53:58', 'mencoba login'),
+('5', '2019-04-29 16:55:20', 'mencoba login'),
+('admin', '2019-04-29 16:56:17', 'mencoba login'),
+('5', '2019-04-29 19:31:12', 'mencoba login'),
+('admin', '2019-04-29 19:37:26', 'mencoba login'),
+('admin', '2019-04-29 19:40:48', 'mencoba login'),
+('5', '2019-04-29 19:50:25', 'mencoba login'),
+('5', '2019-04-29 19:51:09', 'mencoba login'),
+('admin', '2019-04-29 19:51:32', 'mencoba login'),
+('admin', '2019-04-29 19:53:43', 'mencoba login'),
+('admin', '2019-04-29 19:55:28', 'mencoba login'),
+('admin', '2019-04-29 19:58:09', 'mencoba login');
 
 -- --------------------------------------------------------
 
@@ -72,6 +88,16 @@ CREATE TABLE `usergate` (
   `user_nrp` char(14) NOT NULL,
   `gate_id` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `usergate`
+--
+
+INSERT INTO `usergate` (`user_nrp`, `gate_id`) VALUES
+('awk', 'ewewe'),
+('awk', 'owowo'),
+('5', 'ewewe'),
+('5', 'owowo');
 
 -- --------------------------------------------------------
 
@@ -90,6 +116,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_nrp`, `user_password`, `user_role`) VALUES
+('05111640000085', '7d00ff54a263fe80825b9297804a982c', 'user'),
+('5', 'e4da3b7fbbce2345d7772b0674a318d5', 'user'),
+('admin', '21232f297a57a5a743894a0e4a801fc3', 'admin'),
 ('awk', '5e4c8dfa9e20567e2655e847f68193b2', 'user'),
 ('joko', '9ba0009aa81e794e628a04b51eaf7d7f', 'user'),
 ('kyky', '6bcd4817088a4bc68bbee1d34d14b541', 'user'),
