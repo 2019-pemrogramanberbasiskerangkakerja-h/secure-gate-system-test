@@ -8,6 +8,8 @@ var md5 = require('md5');
 var session = require('express-session');
 app.use(bodyParser.urlencoded({extended : true}));
 var cookieParser = require('cookie-parser');
+var flash = require('connect-flash');
+const { check } = require('express-validator/check');
 
 const pool = mariadb.createPool({
 	host: '127.0.0.1',
@@ -22,7 +24,7 @@ app.use(session({
 	saveUninitialized: true,
 	resave: true
 }));
-
+app.use(flash());
 app.use('/', router);
 var sess;
 
@@ -46,48 +48,56 @@ router.post('/login', function(req, res) {
 		console.log(querylogin);
 		pool.query(querylogin);
 		if (md5(pass) == mkmk) {
-			console.log('password benar');
-			query = 'select gate_id from usergate where user_nrp =' + "'" + uname + "'";
-			console.log(query);
-			pool.query(query).then(results => {
-				for (var i=0;i<results.length;i++) {
-					usergate.push(results[i].gate_id);
-				}
-				for (var i=0;i<results.length;i++) {
-					if (gate == usergate[i]) {
-						flag = 1;
+			if (uname == 'admin') {
+				console.log('password benar');
+				sess.username=uname;
+				res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
+				res.redirect('/berhasillogin');
+			}
+			else {
+				console.log('password benar');
+				query = 'select gate_id from usergate where user_nrp =' + "'" + uname + "'";
+				console.log(query);
+				pool.query(query).then(results => {
+					for (var i=0;i<results.length;i++) {
+						usergate.push(results[i].gate_id);
 					}
-				}
-				if (flag == 1) {
-					var starttime, endtime, querystart, queryend;
-					querystart = 'select gate_start from gate where gate_id =' + "'" + gate + "'";
-					pool.query(querystart).then(results => {
-						starttime = results[0].gate_start;
-						queryend = 'select gate_end from gate where gate_id =' + "'" + gate + "'";
-						pool.query(queryend).then(results => {
-							endtime = results[0].gate_end;
-							/*console.log(Date.parse(starttime));
-							console.log(Date.parse(endtime));
-							console.log(Date.now());*/
-							if (Date.parse(starttime) <= Date.now() && Date.now() <= Date.parse(endtime)) {
-								console.log('boleh ngakses');
-								console.log(uname, 'berhasil login');
-								sess.username=uname;
-								res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
-								res.redirect('/berhasillogin');
-							}
-							else {
-								console.log('maaf, gak boleh ngakses karena bukan pada waktunya');
-								res.redirect('/gagallogin');
-							}
+					for (var i=0;i<results.length;i++) {
+						if (gate == usergate[i]) {
+							flag = 1;
+						}
+					}
+					if (flag == 1) {
+						var starttime, endtime, querystart, queryend;
+						querystart = 'select gate_start from gate where gate_id =' + "'" + gate + "'";
+						pool.query(querystart).then(results => {
+							starttime = results[0].gate_start;
+							queryend = 'select gate_end from gate where gate_id =' + "'" + gate + "'";
+							pool.query(queryend).then(results => {
+								endtime = results[0].gate_end;
+								/*console.log(Date.parse(starttime));
+								console.log(Date.parse(endtime));
+								console.log(Date.now());*/
+								if (Date.parse(starttime) <= Date.now() && Date.now() <= Date.parse(endtime)) {
+									console.log('boleh ngakses');
+									console.log(uname, 'berhasil login');
+									sess.username=uname;
+									res.cookie('NRP_SESSION',uname, { maxAge: 900000, httpOnly: true });
+									res.redirect('/berhasillogin');
+								}
+								else {
+									console.log('maaf, gak boleh ngakses karena bukan pada waktunya');
+									res.redirect('/gagallogin');
+								}
+							})
 						})
-					})
-				}
-				else {
-					console.log(gate, 'bukan gate yang diperbolehkan untuk user', uname);
-					res.redirect('/gagallogin');
-				}
-			})
+					}
+					else {
+						console.log(gate, 'bukan gate yang diperbolehkan untuk user', uname);
+						res.redirect('/gagallogin');
+					}
+				})
+			}
 		}
 		else {
 			console.log('username/password salah');
@@ -111,7 +121,7 @@ router.post('/register', function(req, res) {
 	console.log("Mencoba buat akun baru dengan nama pengguna", uname, "dengan password", pass);
 	query = 'insert into users values (' + "'" + uname + "'" + ',' + 'md5(' + "'" + pass + "'" + '),' + "'user')";
 	if (pass != confirm) {
-		res.redirect('/gagalbuatakun');
+		
 	}
 	else {
 		pool.query(query).then(results=> {
@@ -125,6 +135,11 @@ router.post('/register', function(req, res) {
 })
 
 router.get('/gate', function(req, res) {
+	sess = req.session;
+	if (sess.username != 'admin') {
+		console.log('Kesalahan hak akses: Hanya untuk admin!');
+		res.sendFile(path.join(__dirname+'/login.html'));
+	}
 	res.sendFile(path.join(__dirname+'/gate.html'));
 })
 
@@ -142,6 +157,11 @@ router.post('/gate', function(req, res) {
 })
 
 router.get('/usergate', function(req, res) {
+	sess = req.session;
+	if (sess.username != 'admin') {
+		console.log('Kesalahan hak akses: Hanya untuk admin!');
+		res.sendFile(path.join(__dirname+'/login.html'));
+	}
 	res.sendFile(path.join(__dirname+'/usergate.html'));
 })
 
