@@ -44,7 +44,7 @@ router.post('/login', function(req, res) {
 	pool.query(query).then(results => {
 		mkmk = results[0].user_password;
 		console.log(mkmk);
-		var querylogin = 'insert into log values(' + "'" + uname + "'" + ",now()," + "'mencoba login')";
+		var querylogin = 'insert into log values(' + "'" + uname + "'" + ",now()," + "'mencoba login di gate " + gate + "')" ;
 		console.log(querylogin);
 		pool.query(querylogin);
 		if (md5(pass) == mkmk) {
