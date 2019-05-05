@@ -8,4 +8,13 @@ module.exports = function(app) {
 
     app.route('/users')
         .get(todoList.users);
+
+    app.route('/users')
+    	.post(todoList.createUsers);
+
+    app.route('/users/:nrp')
+    	.get(todoList.getUserById);
+
+    app.route('/users/:nrp')
+    	.delete(todoList.deleteUser);
 };
