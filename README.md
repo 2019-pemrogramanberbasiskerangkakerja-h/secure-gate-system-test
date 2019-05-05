@@ -23,3 +23,21 @@ Tools yang digunakan :
 4. Jalankan Perintah "Node index.js"
 5. Buka browser dan masuk ke http://localhost:3000/login
 6. Buka CMD untuk melihat log saat gagal dan berhasil
+
+<b>RESTful API</b>
+
+API yang diterapkan adalah: 
+- user
+POST /users		- Add user
+GET /users		- Get all users
+GET /users/:userid	- Get info user
+DELETE /users/:userid	- Delete user
+
+- auth-login
+POST /login		- login
+
+- Gate
+POST /gates		- add gate
+GET /gates		- get all gates
+GET /gates/:gateid	- get info gate
+DELETE /gates/:gateid	- delete gate
