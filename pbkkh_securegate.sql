@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2019 at 01:06 AM
+-- Generation Time: May 06, 2019 at 07:25 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.2
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `gate` (
   `gate_id` varchar(20) NOT NULL,
-  `gate_start` datetime NOT NULL,
-  `gate_end` datetime NOT NULL
+  `gate_start` time NOT NULL,
+  `gate_end` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -39,10 +39,10 @@ CREATE TABLE `gate` (
 --
 
 INSERT INTO `gate` (`gate_id`, `gate_start`, `gate_end`) VALUES
-('ewewe', '2019-04-29 00:30:00', '2019-04-30 13:00:00'),
-('jokowi', '2019-04-29 15:00:00', '2019-04-30 15:00:00'),
-('mygate', '2019-05-01 00:00:00', '2019-05-02 10:00:00'),
-('owowo', '2019-04-20 14:30:00', '2019-04-25 02:45:00');
+('ewewe', '00:30:00', '13:00:00'),
+('jokowi', '10:00:00', '21:00:00'),
+('mygate', '00:00:00', '10:00:00'),
+('owowo', '14:30:00', '17:00:00');
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,13 @@ INSERT INTO `log` (`user_nrp`, `log_timestamp`, `log_actions`) VALUES
 ('admin', '2019-04-29 19:51:32', 'mencoba login'),
 ('admin', '2019-04-29 19:53:43', 'mencoba login'),
 ('admin', '2019-04-29 19:55:28', 'mencoba login'),
-('admin', '2019-04-29 19:58:09', 'mencoba login');
+('admin', '2019-04-29 19:58:09', 'mencoba login'),
+('5', '2019-04-30 01:34:45', 'mencoba login'),
+('admin', '2019-04-30 01:35:12', 'mencoba login'),
+('05111640000085', '2019-04-30 03:05:03', 'mencoba login'),
+('05111640000085', '2019-04-30 03:23:34', 'mencoba login'),
+('05111640000085', '2019-04-30 03:33:06', 'mencoba login di gate jokowi'),
+('admin', '2019-04-30 03:42:50', 'mencoba login di gate ewewe');
 
 -- --------------------------------------------------------
 
@@ -97,7 +103,8 @@ INSERT INTO `usergate` (`user_nrp`, `gate_id`) VALUES
 ('awk', 'ewewe'),
 ('awk', 'owowo'),
 ('5', 'ewewe'),
-('5', 'owowo');
+('5', 'owowo'),
+('5', 'jokowi');
 
 -- --------------------------------------------------------
 
@@ -117,6 +124,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_nrp`, `user_password`, `user_role`) VALUES
 ('05111640000085', '7d00ff54a263fe80825b9297804a982c', 'user'),
+('05111640000099', '8fc9ea4323c75d30cd28d1ca854d56d8', 'user'),
+('0511164000086', '60b48fed8fc21ba660b00022bc06f0ed', 'user'),
 ('5', 'e4da3b7fbbce2345d7772b0674a318d5', 'user'),
 ('admin', '21232f297a57a5a743894a0e4a801fc3', 'admin'),
 ('awk', '5e4c8dfa9e20567e2655e847f68193b2', 'user'),
