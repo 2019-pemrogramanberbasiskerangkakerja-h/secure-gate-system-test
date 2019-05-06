@@ -1,3 +1,4 @@
+session = require('express-session');
 var express = require('express'),
     app = express(),
     port = process.env.PORT || 3000,
@@ -7,6 +8,12 @@ var express = require('express'),
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(session({
+	secret: 'hehe',
+	saveUninitialized: true,
+	resave: true
+}));
 
 var routes = require('./routes');
 routes(app);

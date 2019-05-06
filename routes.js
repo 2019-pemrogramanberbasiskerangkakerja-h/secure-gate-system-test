@@ -17,4 +17,7 @@ module.exports = function(app) {
 
     app.route('/users/:nrp')
     	.delete(todoList.deleteUser);
+
+    app.route('/login')
+        .post(todoList.login);
 };
