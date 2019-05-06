@@ -121,6 +121,20 @@ exports.login = function(req, res) {
 	})
 }
 
+exports.createGates = function(req, res) {
+    var id = req.body.idgate;
+    var start = req.body.start;
+    var end = req.body.end;
+    connection.query('insert into gate (gate_id, gate_start, gate_end) values (?,?,?)', [id, start, end], function(error, row, fields) {
+        if(error) {
+            console.log(error);
+        }
+        else {
+            response.ok("Berhasil menambahkan gate!", res);
+        }
+    });
+};
+
 exports.index = function(req, res) {
     response.ok("Hello from the Node JS RESTful side!", res)
 };

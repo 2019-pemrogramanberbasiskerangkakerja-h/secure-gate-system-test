@@ -20,4 +20,7 @@ module.exports = function(app) {
 
     app.route('/login')
         .post(todoList.login);
+
+    app.route('/gates')
+        .post(todoList.createGates);
 };
