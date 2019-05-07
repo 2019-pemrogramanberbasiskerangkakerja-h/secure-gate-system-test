@@ -69,6 +69,8 @@ router.post('/login', function(req, res) {
 					}
 					if (flag == 1) {
 						var starttime, endtime, querystart, queryend;
+						var today = new Date();
+						var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 						querystart = 'select gate_start from gate where gate_id =' + "'" + gate + "'";
 						pool.query(querystart).then(results => {
 							starttime = results[0].gate_start;
@@ -78,7 +80,7 @@ router.post('/login', function(req, res) {
 								/*console.log(Date.parse(starttime));
 								console.log(Date.parse(endtime));
 								console.log(Date.now());*/
-								if (Date.parse(starttime) <= Date.now() && Date.now() <= Date.parse(endtime)) {
+								if (starttime <= time && time <= endtime) {
 									console.log('boleh ngakses');
 									console.log(uname, 'berhasil login');
 									sess.username=uname;
