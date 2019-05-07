@@ -157,7 +157,7 @@ exports.allGate = function(req, res) {
     });
 };
 
-/*exports.infoGate = function(req, res) {
+exports.infoGate = function(req, res) {
     var gateid = req.params.gateid;
     connection.query('select gate_start, gate_end, user_nrp from gate, usergate where usergate.gate_id = gate.gate_id and gate.gate_id = ?', [gateid], function(error, rows, fields) {
         if(error) {
@@ -167,7 +167,7 @@ exports.allGate = function(req, res) {
             response.ok(rows, res);
         }
     })
-}*/
+}
 
 exports.index = function(req, res) {
     response.ok("Hello from the Node JS RESTful side!", res)

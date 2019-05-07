@@ -31,5 +31,5 @@ module.exports = function(app) {
         .get(todoList.allGate);
 
     app.route('/gates/:gateid')
-        .get(todoList.infoGate);     
+        .get(todoList.infoGate);    
 };
