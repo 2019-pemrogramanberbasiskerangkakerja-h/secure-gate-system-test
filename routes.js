@@ -26,4 +26,10 @@ module.exports = function(app) {
 
     app.route('/gates/:gateid')
         .delete(todoList.deleteGate);
+
+   app.route('/gates')
+        .get(todoList.allGate);
+
+    app.route('/gates/:gateid')
+        .get(todoList.infoGate);     
 };
