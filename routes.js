@@ -19,7 +19,10 @@ module.exports = function(app) {
     	.delete(todoList.deleteUser);
 
     app.route('/login')
-        .post(todoList.login);
+        .post(todoList.dologin);
+
+    app.route('/login')
+        .get(todoList.login);
 
     app.route('/gates')
         .post(todoList.createGates);

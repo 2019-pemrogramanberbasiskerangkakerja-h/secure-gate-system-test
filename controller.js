@@ -1,7 +1,7 @@
 'use strict';
 
 var md5 = require('md5');
-
+const path = require('path');
 var response = require('./res');
 var connection = require('./conn');
 var session = require('express-session');
@@ -12,7 +12,7 @@ exports.users = function(req, res) {
         if(error){
             console.log(error)
         } else{
-            response.ok(rows, res)
+            response.ok(rows, res);
         }
     });
 };
@@ -56,6 +56,10 @@ exports.deleteUser = function(req, res) {
 }
 
 exports.login = function(req, res) {
+	res.sendFile(path.join(__dirname+'/login.html'));
+}
+
+exports.dologin = function(req, res) {
 	sess = req.session;
 	sess.username = 0;
 	var flag = 0;
