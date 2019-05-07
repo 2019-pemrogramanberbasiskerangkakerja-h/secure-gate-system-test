@@ -78,58 +78,75 @@ exports.dologin = function(req, res) {
 		else {
 			//store the password
 			var system_password = rows[0].user_password;
-			//console.log(md5(password));
-			//console.log(system_password);
-			if (md5(password) == system_password) {
-				connection.query('select gate_id from usergate where user_nrp = ?', [username], function (error, rows, fields) {
-					//console.log(rows[1].gate_id);
-					for (var i=0;i<rows.length;i++) {
-						//console.log(rows[i].gate_id);
-						permitted_gates.push(rows[i].gate_id);
-					}
-					for (var i=0;i<permitted_gates.length;i++) {
-						if (gate == permitted_gates[i]) {
-							flag = 1;
-						}
-					}
-					if (flag == 1) {
-						var today = new Date();
-						var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-						connection.query('select gate_start from gate where gate_id = ?', [gate], function (error, rows, fields) {
-							starttime = rows[0].gate_start;
-							connection.query('select gate_end from gate where gate_id = ?', [gate], function (error, rows, fields) {
-								endtime = rows[0].gate_end;
-								console.log(time, starttime, endtime);
-								//console.log(Date.parse(time), Date.parse(starttime), Date.parse(endtime));
-								if (starttime <= time && time <= endtime) {
-									sess.username = username;
-									console.log(sess.username);
-									res.cookie('NRP_SESSION',username, { maxAge: 900000, httpOnly: true });
-									response.ok("Login berhasil!", res);
-								}
-								else {
-									response.ok("Login gagal, belum waktunya!", res);
-								}
-							});
-						});
-					}
-					else {
-						response.ok("Login gagal, bukan gate yang dibolehkan untuk user!", res);
-					}
-				});
-				/*sess.username = username;
-				res.cookie('NRP_SESSION',username, { maxAge: 900000, httpOnly: true });*/
+			if (username == 'admin') {
+				if (system_password	== md5(password)) {
+					sess.username = username;
+					response.ok("Login berhasil!", res);
+				}
+				else {
+					response.ok("Login gagal, username atau password salah!", res);
+				}
 			}
 			else {
-				response.ok("Login gagal, username atau password salah!", res);
-			}
+				//console.log(md5(password));
+				//console.log(system_password);
+				if (md5(password) == system_password) {
+					connection.query('select gate_id from usergate where user_nrp = ?', [username], function (error, rows, fields) {
+						//console.log(rows[1].gate_id);
+						for (var i=0;i<rows.length;i++) {
+							//console.log(rows[i].gate_id);
+							permitted_gates.push(rows[i].gate_id);
+						}
+						for (var i=0;i<permitted_gates.length;i++) {
+							if (gate == permitted_gates[i]) {
+								flag = 1;
+							}
+						}
+						if (flag == 1) {
+							var today = new Date();
+							var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+							connection.query('select gate_start from gate where gate_id = ?', [gate], function (error, rows, fields) {
+								starttime = rows[0].gate_start;
+								connection.query('select gate_end from gate where gate_id = ?', [gate], function (error, rows, fields) {
+									endtime = rows[0].gate_end;
+									console.log(time, starttime, endtime);
+									//console.log(Date.parse(time), Date.parse(starttime), Date.parse(endtime));
+									if (starttime <= time && time <= endtime) {
+										sess.username = username;
+										console.log(sess.username);
+										res.cookie('NRP_SESSION',username, { maxAge: 900000, httpOnly: true });
+										response.ok("Login berhasil!", res);
+									}
+									else {
+										response.ok("Login gagal, belum waktunya!", res);
+									}
+								});
+							});
+						}
+						else {
+							response.ok("Login gagal, bukan gate yang dibolehkan untuk user!", res);
+						}
+					});
+					/*sess.username = username;
+					res.cookie('NRP_SESSION',username, { maxAge: 900000, httpOnly: true });*/
+				}
+				else {
+					response.ok("Login gagal, username atau password salah!", res);
+				}
 			//response.ok(rows, res);
+			}
 		}
 	})
 }
 
 exports.formGate = function(req, res) {
-	res.sendFile(path.join(__dirname+'/gate.html'));
+	sess=req.session;
+	if (sess.username != 'admin') {
+		response.ok("Maaf, fungsi ini hanya untuk admin!", res);
+	}
+	else {
+		res.sendFile(path.join(__dirname+'/gate.html'));
+	}
 }
 
 exports.createGates = function(req, res) {
@@ -178,6 +195,62 @@ exports.infoGate = function(req, res) {
             response.ok(rows, res);
         }
     })
+}
+
+exports.showUserGateAddForm = function(req, res) {
+	sess = req.session;
+	if (sess.username != 'admin') {
+		response.ok("Maaf, fungsi ini hanya untuk admin!", res);
+	}
+	res.sendFile(path.join(__dirname+'/usergate.html'));
+}
+
+exports.usergateAdd = function(req, res) {
+	var name = req.body.user;
+	var gate = req.body.gate;
+	connection.query('insert into usergate (user_nrp,gate_id) values (?,?)', [name, gate], function(error, rows, fields) {
+		if(error) {
+			console.log(error);
+		}
+		else {
+			var resp = "Berhasil menambahkan user " + name + " ke gate " + gate
+			console.log(resp)
+			response.ok(resp, res);
+		}
+	})
+}
+
+exports.showUserGateDelForm = function(req, res) {
+	sess = req.session;
+	if (sess.username != 'admin') {
+		response.ok("Maaf, fungsi ini hanya untuk admin!", res);
+	}
+	res.sendFile(path.join(__dirname+'/usergatedel.html'));
+}
+
+exports.usergateDel = function(req, res) {
+	var name = req.body.user;
+	var gate = req.body.gate;
+	connection.query('delete from usergate where user_nrp = ? and gate_id = ?', [name, gate], function(error, rows, fields) {
+		if(error) {
+			console.log(error);
+		}
+		else {
+			var resp = "Berhasil menghapus user " + name + " dari gate " + gate
+			console.log(resp)
+			response.ok(resp, res);
+		}
+	})
+}
+
+exports.logout = function(req, res) {
+	sess = req.session;
+	req.session.destroy((err) => {
+		if (err) {
+			return console.log(err);
+		}
+		res.redirect('/')
+	})
 }
 
 exports.index = function(req, res) {

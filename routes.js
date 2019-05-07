@@ -40,5 +40,20 @@ module.exports = function(app) {
         .get(todoList.infoGate);
 
     app.route('/buatgate')
-        .get(todoList.formGate)    
+        .get(todoList.formGate)
+
+    app.route('/usergate')
+        .get(todoList.showUserGateAddForm)
+
+    app.route('/usergate')
+        .post(todoList.usergateAdd)
+
+    app.route('/usergatedel')
+        .get(todoList.showUserGateDelForm)
+
+    app.route('/usergatedel')
+        .post(todoList.usergateDel)
+
+    app.route('/logout')
+        .get(todoList.logout)
 };
