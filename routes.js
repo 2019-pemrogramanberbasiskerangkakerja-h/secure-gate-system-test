@@ -6,6 +6,9 @@ module.exports = function(app) {
     app.route('/')
         .get(todoList.index);
 
+    app.route('/register')
+        .get(todoList.register);
+
     app.route('/users')
         .get(todoList.users);
 
@@ -24,15 +27,18 @@ module.exports = function(app) {
     app.route('/login')
         .get(todoList.login);
 
-    app.route('/gates')
+    app.route('/gate')
         .post(todoList.createGates);
 
-    app.route('/gates/:gateid')
+    app.route('/gate/:gateid')
         .delete(todoList.deleteGate);
 
-   app.route('/gates')
+   app.route('/gate')
         .get(todoList.allGate);
 
-    app.route('/gates/:gateid')
-        .get(todoList.infoGate);    
+    app.route('/gate/:gateid')
+        .get(todoList.infoGate);
+
+    app.route('/buatgate')
+        .get(todoList.formGate)    
 };

@@ -7,6 +7,9 @@ var connection = require('./conn');
 var session = require('express-session');
 var sess;
 
+exports.register = function(req, res) {
+	res.sendFile(path.join(__dirname+'/register.html'));
+}
 exports.users = function(req, res) {
     connection.query('SELECT * FROM users', function (error, rows, fields){
         if(error){
@@ -50,7 +53,7 @@ exports.deleteUser = function(req, res) {
 			console.log(error);
 		}
 		else {
-			response.ok(rows, res);
+			res.sendFile(path.join(__dirname+'/berhasilhapusakun.html'));
 		}
 	})
 }
@@ -125,6 +128,10 @@ exports.dologin = function(req, res) {
 	})
 }
 
+exports.formGate = function(req, res) {
+	res.sendFile(path.join(__dirname+'/gate.html'));
+}
+
 exports.createGates = function(req, res) {
     var id = req.body.idgate;
     var start = req.body.start;
@@ -174,6 +181,6 @@ exports.infoGate = function(req, res) {
 }
 
 exports.index = function(req, res) {
-    response.ok("Hello from the Node JS RESTful side!", res)
+    res.sendFile(path.join(__dirname+'/index.html'));
 };
 

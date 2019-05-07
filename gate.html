@@ -16,11 +16,11 @@
 		            <h1 class="display-4">Buat gate baru</h1>
 		            <p class="lead">Gunakan form ini untuk membuat gate baru.</p>
 					<form action="/gate" method="post">
-						<p>Gate ID: </p><input type="text" name="id" placeholder="ID Gate" id="my_container" required>
+						<p>Gate ID: </p><input type="text" name="idgate" placeholder="ID Gate" id="my_container" required>
 						<br>
-					    <p>Mulai Akses: </p><input type="datetime-local" name="start" placeholder="Kata Sandi" id="pass_container" required>
+					    <p>Mulai Akses: </p><input type="time" name="start" placeholder="Kata Sandi" id="pass_container" required>
 					    <br>
-					    <p>Batas waktu akses: </p><input type="datetime-local" name="end" placeholder="Konfirmasi Kata Sandi" id="pass_container" required>
+					    <p>Batas waktu akses: </p><input type="time" name="end" placeholder="Konfirmasi Kata Sandi" id="pass_container" required>
 					    <input type="submit" value="Buat Gate Baru">
 					</form>
 				</div>
