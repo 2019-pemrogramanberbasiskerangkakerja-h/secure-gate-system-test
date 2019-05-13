@@ -28,16 +28,19 @@ Tools yang digunakan :
 
 API yang diterapkan adalah: 
 - user
-POST /users		- Add user
-GET /users		- Get all users
-GET /users/:userid	- Get info user
-DELETE /users/:userid	- Delete user
+<ul>
+	<li><b>- user</b></li>
+	<li>POST /users		- Add user</li>
+	<li>GET /users		- Get all users</li>
+	<li>GET /users/:userid	- Get info user</li>
+	<li>DELETE /users/:userid	- Delete user</li>
 
-- auth-login
-POST /login		- login
+<li>- auth-login</li>
+<li>POST /login		- login</li>
 
-- Gate
-POST /gates		- add gate
-GET /gates		- get all gates
-GET /gates/:gateid	- get info gate
-DELETE /gates/:gateid	- delete gate
+<li>- Gate</li>
+<li>POST /gates		- add gate</li>
+<li>GET /gates		- get all gates</li>
+<li>GET /gates/:gateid	- get info gate</li>
+<li>DELETE /gates/:gateid	- delete gate</li>
+</ul>
