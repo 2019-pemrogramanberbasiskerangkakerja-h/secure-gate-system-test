@@ -38,7 +38,7 @@ API yang diterapkan adalah:
 <li>- auth-login</li>
 <li>POST /login		- login (requirement: body: username, password, gate)</li>
 
-<li>- Gate</li>
+<li>- Gate (admin only, login as admin username admin password admin)</li>
 <li>POST /gates		- add gate (requirement: body: idgate, start, end)</li>
 <li>GET /gates		- get all gates</li>
 <li>GET /gates/:gateid	- get info gate (requirement: params: gateid)</li>
