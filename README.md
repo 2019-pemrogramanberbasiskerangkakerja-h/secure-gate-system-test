@@ -30,17 +30,17 @@ API yang diterapkan adalah:
 - user
 <ul>
 	<li><b>- user</b></li>
-	<li>POST /users		- Add user</li>
+	<li>POST /users		- Add user (requirement: body: username, password)</li>
 	<li>GET /users		- Get all users</li>
-	<li>GET /users/:userid	- Get info user</li>
-	<li>DELETE /users/:userid	- Delete user</li>
+	<li>GET /users/:userid	- Get info user (requirement: params: userid)</li>
+	<li>DELETE /users/:userid	- Delete user (requirement: params: userid)</li>
 
 <li>- auth-login</li>
-<li>POST /login		- login</li>
+<li>POST /login		- login (requirement: body: username, password, gate)</li>
 
 <li>- Gate</li>
-<li>POST /gates		- add gate</li>
+<li>POST /gates		- add gate (requirement: body: idgate, start, end)</li>
 <li>GET /gates		- get all gates</li>
-<li>GET /gates/:gateid	- get info gate</li>
-<li>DELETE /gates/:gateid	- delete gate</li>
+<li>GET /gates/:gateid	- get info gate (requirement: params: gateid)</li>
+<li>DELETE /gates/:gateid	- delete gate (requirement: params: gateid)</li>
 </ul>
