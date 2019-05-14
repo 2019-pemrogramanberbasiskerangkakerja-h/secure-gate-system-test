@@ -24,23 +24,34 @@ Tools yang digunakan :
 5. Buka browser dan masuk ke http://localhost:3000/login
 6. Buka CMD untuk melihat log saat gagal dan berhasil
 
-<b>RESTful API</b>
+<h2><b>RESTful API</b></h2>
 
 API yang diterapkan adalah: 
-- user
+
+<b>User</b>
 <ul>
-	<li><b>- user</b></li>
-	<li>POST /users		- Add user (requirement: body: username, password)</li>
-	<li>GET /users		- Get all users</li>
-	<li>GET /users/:userid	- Get info user (requirement: params: userid)</li>
-	<li>DELETE /users/:userid	- Delete user (requirement: params: userid)</li>
-
-<li>- auth-login</li>
-<li>POST /login		- login (requirement: body: username, password, gate)</li>
-
-<li>- Gate (admin only, login as admin username admin password admin)</li>
-<li>POST /gates		- add gate (requirement: body: idgate, start, end)</li>
-<li>GET /gates		- get all gates</li>
-<li>GET /gates/:gateid	- get info gate (requirement: params: gateid)</li>
-<li>DELETE /gates/:gateid	- delete gate (requirement: params: gateid)</li>
+	<li>POST /users -register user baru(requirement body x-form-urlencoded: username, password) </li>
+	<li>GET /users -Get All Users </li>
+	<li>GET /users/:nrp -Get Info user</li>
+	<li>DELETE /users/:nrp - Delete user</li>
+</ul>
+<b>auth-login</b>
+<ul>
+	<li>POST /login -login (requirement body x-form-urlencoded: username, password, gate)</li>
+</ul>
+<b>Gate (admin only, login as admin username admin password admin)</b>
+<ul>
+	<li>POST /gate -add gate (requirement body x-form-urlencoded: idgate, start, end)</li>
+	<li>GET /gate -get all Gate</li>
+	<li>GET /gate/:gareid - Get Info gate</li>
+	<li>DELETE /gate/:gateid</li>
+</ul>
+<b>UserGate</b>
+<ul>
+	<li>POST /usergate -add user to gate (requirement body x-form-urlencoded: user,gate)</li>
+	<li>POST /usergatedel -del user to gate(requirement body x-form-urlencoded: user,gate)</li>
+</ul>
+<b>LogOut</b>
+<ul>
+	<li>GET /logout -logout</li>
 </ul>
