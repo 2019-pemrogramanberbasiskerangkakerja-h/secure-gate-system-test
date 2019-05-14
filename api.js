@@ -18,5 +18,5 @@ app.use(session({
 var routes = require('./routes');
 routes(app);
 
-app.listen(port);
+app.listen(port, "192.168.1.106");
 console.log('Berjalan pada port: ' + port);
