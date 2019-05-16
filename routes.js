@@ -13,13 +13,13 @@ module.exports = function(app) {
         .get(todoList.users);
 
     app.route('/users')
-    	.post(todoList.createUsers);
+        .post(todoList.createUsers);
 
-    app.route('/users/:nrp')
-    	.get(todoList.getUserById);
+    app.route('/users/:username')
+        .get(todoList.getUserById);
 
-    app.route('/users/:nrp')
-    	.delete(todoList.deleteUser);
+    app.route('/users/:username')
+        .delete(todoList.deleteUser);
 
     app.route('/login')
         .post(todoList.dologin);

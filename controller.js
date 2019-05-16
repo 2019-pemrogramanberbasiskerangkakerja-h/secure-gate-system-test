@@ -35,7 +35,7 @@ exports.createUsers = function(req, res) {
 };
 
 exports.getUserById = function(req, res) {
-	var nrp = req.params.nrp;
+	var nrp = req.params.username;
 	connection.query('select * from users where user_nrp = ?', [nrp], function(error, rows, fields) {
 		if(error) {
 			console.log(error);
@@ -47,7 +47,7 @@ exports.getUserById = function(req, res) {
 }
 
 exports.deleteUser = function(req, res) {
-	var nrp = req.params.nrp;
+	var nrp = req.params.username;
 	connection.query('delete from users where user_nrp = ?', [nrp], function (error, rows, fields) {
 		if (error) {
 			console.log(error);
@@ -256,4 +256,3 @@ exports.logout = function(req, res) {
 exports.index = function(req, res) {
     res.sendFile(path.join(__dirname+'/index.html'));
 };
-
