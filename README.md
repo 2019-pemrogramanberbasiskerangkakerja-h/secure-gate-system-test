@@ -55,3 +55,5 @@ API yang diterapkan adalah:
 <ul>
 	<li>GET /logout -logout</li>
 </ul>
+
+Untuk view API dari kelompok 1 kami menggunakan repoistori "<i>https://github.com/Aidil98/TEST-API-JOHN</i>"
