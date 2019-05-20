@@ -48,6 +48,8 @@ API yang diterapkan adalah:
 </ul>
 <b>UserGate</b>
 <ul>
+	<li>GET /usergateall - show all user and gates that can be accessed by respective user</li>
+	<li>GET /usergateall/:gateid - show the user that can access the specified gates</li>
 	<li>POST /usergate -add user to gate (requirement body x-form-urlencoded: user,gate)</li>
 	<li>POST /usergatedel -del user to gate(requirement body x-form-urlencoded: user,gate)</li>
 </ul>
